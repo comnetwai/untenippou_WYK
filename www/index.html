@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src * data: gap: https://ssl.gstatic.com; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'">
+    <script src="components/loader.js"></script>
+    <script src="js/DR01Loginjs.js"></script>
+
+    <script src="lib/onsenui/js/onsenui.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="components/loader.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsenui.css">
+  <link rel="stylesheet" href="lib/onsenui/css/onsen-css-components.css">
+  <link rel="stylesheet" href="css/style.css">
+
+   
+   
+  <script>
+    ons.ready(function() {
+      console.log("Onsen UI is ready!");
+    });
+
+    if (ons.platform.isIPhoneX()) {
+      document.documentElement.setAttribute('onsflag-iphonex-portrait', '');
+      document.documentElement.setAttribute('onsflag-iphonex-landscape', '');
+    }
+
+var applicationKey = "05ec7d93cac7a3226f2486e6e974969bc49fa9661211a6aca20b95f8591c4014" ;
+  var clientKey = "7ec99a6144a897036ef8d0ba113695c73f7bbddd93b79b1ddbd6566e81c578b4" ;
+ // [NCMB] SDK initialization 
+  var ncmb = new NCMB (applicationKey, clientKey);
+//   var TestClass = ncmb.DataStore ( "TestClass" );
+//   var testClass = new TestClass ();
+//    // Set "Hello!" In the "message" field 
+//   testClass.set ( "message" , "Hello*******" )
+//           .save ();
+
+function testmail()
+{
+    var mail=document.getElementById("TB_mail").value;    
+     ncmb.User.requestSignUpEmail(mail)
+           .then(function(data)
+           {
+            $("#page2").delay(4000).fadeIn();
+            $("#TB_mail").css("border", "1px solid");
+            $('#page2').trigger('change',on1());
+            $('#page2').trigger('change',toggleLoader1());
+            $('#page2').trigger('change',changesoushintext());
+            // $('#page2').load('DR02Mail.html');
+            
+            setTimeout(function() {
+             location.href = "DR02Mail.html";
+             }, 3000);
+           
+           })
+           .catch(function(err)
+           {
+             // エラー処理
+           //alert ('エラー処理');
+            $("#TB_mail").css("border", "1px solid red");
+            $("#TB_mail").focus();
+            
+            });
+        //  alert ('送信後処理aaa');
+}
+
+
+
+function getData(e) {
+    e.preventDefault();
+}
+    
+  document.addEventListener('init', function(event) {
+  var page = event.target;
+
+   if (page.id === 'page1') {
+    page.querySelector('#BT_reg').onclick = function() {
+       document.querySelector('#myNavigator').pushPage('page2.html', {data: {title: 'アカウント登録'}});
+     };
+   } 
+  
+  if (page.id === 'page1') {
+     
+     page.querySelector('#Lnk_pass').onclick = function() {
+       document.querySelector('#myNavigator').pushPage('page3.html', {data: {title: 'アカウント登録'}});
+      
+     };
+  } 
+
+
+  else if (page.id === 'page2') {
+    page.querySelector('ons-toolbar .center').innerHTML = page.data.title;
+  }
+});
+
+function testlogin()
+{
+    document.getElementById("LB_errmailaddress").style.display = "none";
+    document.getElementById("LB_errpass").style.display = "none";
+    if(document.getElementById("TB_Lmailaddress").value.length == 0)
+    {
+        document.getElementById("LB_errmailaddress").style.display = "block";
+    }
+
+    else if(document.getElementById("TB_Lpass").value.length == 0)
+    {
+        document.getElementById("LB_errpass").style.display = "block";
+    }
+    else
+    {
+            $('#page2').trigger('change',on());
+            $('#page2').trigger('change',toggleLoader());
+            $('#page2').trigger('change',changetext());
+            setTimeout(function() {
+             location.href = "DR07NippouTouroku.html";
+             }, 3000);
+    }
+
+}
+
+
+//  function spinner() {   
+//      document.getElementsByClassName("loader")[0].style.display = "block";    
+//     }
+
+
+  </script>
+
+</head>
+<body>
+  <form method="POST">
+  <ons-navigator swipeable id="myNavigator" page="page1.html"></ons-navigator>
+  <template id="page1.html">
+ <ons-page id="page1">
+     <div class="background"></div>
+     <div id="overlay" onclick="off()"></div>
+   
+    <div style="text-align: center;">
+        <img src="img/drive.JPEG" width="100%" height="333">
+    </div> 
+    <div style="text-align: center; margin-top: 30px;margin-bottom:10px">  
+        <div> 
+            <input id="TB_Lmailaddress" type="text" class="d01 drfont txthighlight text-input text-input--underbar" placeholder="メールアドレス" float> <br/>
+            <label id="LB_errmailaddress" class="drfont dr01mailerrormsg" >このメールアドレスは登録されていません。</label>
+        </div>  
+        <div style="margin-top: 20px;"> 
+            <input id="TB_Lpass" type="password" class="d01 drfont txthighlight text-input text-input--underbar" maxlength="8" placeholder="パスワード" float /><br/>
+            <label id="LB_errpass" class="drfont dr01pswerrormsg">パスワードが正しくありません。</label>
+         </div>
+        <div> 
+        <div style="margin-top: 30px;">
+             <!-- <a onclick="return createTimedLink(this, myFunction, 3000);" href="DR07NippouTouroku.html">                  -->
+            <ons-button id="BT_Login" class="drloginbtn drfont" onclick="testlogin();">
+                ログイン            
+                </ons-button> 
+                
+                <div id="loader" class="loader" style="display:none;">
+                <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                 <div></div>
+                 </div>
+                </div>
+             <!-- </a> -->
+             <!-- <a onclick="return createTimedLink(this, myFunction, 3000);" href="DR07NippouTouroku.html">                 
+            <ons-button id="BT_Login" class="drloginbtn drfont" onclick="on();toggleLoader();changetext()">
+                ログイン            
+                </ons-button> 
+                
+                <div id="loader" class="loader" style="display:none;">
+                <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                 <div></div>
+                 </div>
+                </div>
+             </a> -->
+        </div>  
+
+         <div style="margin-top: 30px;">       
+                  <!-- <ons-button id="Lnk_pass">パスワードをお忘れの方</ons-button> -->
+            <a href="#" id="Lnk_pass" class="drfont">パスワードをお忘れの方</a> 
+        </div>  
+         <div style="margin-top: 30px;margin-bottom:0px;">  
+             <!-- <a href="register01.html"> -->
+            <ons-button id="BT_reg" class="drloginbtn drfont" style="background-color:orange;" >新規登録</ons-button> 
+           
+            <!-- </a> -->
+        </div>  
+    </div>  
+    </div> 
+     
+</ons-page> 
+  </template>
+
+  <template id="page2.html">
+  <ons-page id="page2">
+       
+    <ons-toolbar>
+      <div class="left"><ons-back-button></ons-back-button></div>
+      <div class="center"></div>
+    </ons-toolbar>
+    <div class="background"></div>
+   <div id="overlay1" onclick="off1()"></div>
+   <div class="dr01divmail" style="text-align: center;"> 
+       <div>
+       <input id="TB_mail" type="text" class="d01 drfont txthighlight text-input text-input--underbar" placeholder="メールアドレス" float>
+       </div>
+      
+       <div style="margin-top: 30px;">  
+        
+            <ons-button id="BT_Soushin" class="drloginbtn drfont" onclick="testmail();">送信
+               
+                </ons-button>  
+            <div id="loader1" class="loader1" style="display:none;">
+                <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                 <div></div>
+                 </div>
+                </div>
+            
+           
+        </div>  
+   </div>
+  </ons-page>
+</template>
+
+
+<template id="page3.html">
+    <ons-page id="page3">
+       
+    <ons-toolbar>
+      <div class="left"><ons-back-button></ons-back-button></div>
+      <div class="center">パスワード再設定</div>
+    </ons-toolbar>
+    <div class="background"></div>
+    <div id="overlay2"></div>
+    <div class="dr01rpassdivmail" style="text-align:center;">
+        <div style="margin-bottom:50px;">
+        <label class="drfont" >パスワードの再設定方法をメールで送りします。</label>
+        </div>
+        <div style="margin-bottom:20px;">
+            <input id="TB_Rpassmail" type="text" class="d01 drfont txthighlight text-input text-input--underbar" placeholder="メールアドレス" float>
+        </div>
+        <div style="margin-bottom:30px;">
+             <a href="DR05PasswordReset.html" onclick="return createTimedLink(this, myFunction, 3000);">
+            <ons-button id="BT_Rpassoushin" class="drloginbtn drfont" onclick="on2();toggleLoader1();changerpasssoushintext();">送信</ons-button>
+            <div id="loader1" class="loader1" style="display:none;">
+                <div class="lds-ring">
+                <div></div>
+                <div></div>
+                <div></div>
+                 <div></div>
+                 </div>
+                </div>
+             </a>
+        </div>
+    <div>
+        <a href="index.html" style="text-decoration:none;">ログイン画面へ戻る</a>
+    </div>.
+    </div>
+    </ons-page>
+</template>
+    </form>
+</body>
+</html>
